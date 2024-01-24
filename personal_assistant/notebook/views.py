@@ -30,7 +30,7 @@ def format_created_at(created_at):
 
 @login_required
 def notebook_list(request):
-    notebooks = Notebook.objects.all()
+    notebooks = Notebook.objects.filter(user=request.user)
     search_form = SearchNoteForm(request.GET)
     elem_per_page = 5
     paginator = Paginator(notebooks, elem_per_page)

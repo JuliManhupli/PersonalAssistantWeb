@@ -58,7 +58,7 @@ def delete_file(request, file_id):
 
 @login_required
 def all_files(request):
-    user_files = File.objects.filter(user=request.user)
+    user_files = File.objects.filter(user=request.user).order_by('-id')
     search_query = request.GET.get('search', '')
 
     if search_query:

@@ -399,3 +399,12 @@ input[type="text"], textarea, select {
     border: 1px solid #ddd;
 }
 
+.rounded-logo {
+    width: 60%;
+    border-radius: 20px;
+    display: flex;
+    margin: 50px auto;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}

@@ -1,10 +1,11 @@
 {% extends 'personal_assistant/base.html' %}
 
 {% block title %}
-Main
+Головна
 {% endblock %}
 
 {% block content %}
+{% load static %}
 <div class="container mt-3">
     <h2>Головна</h2>
 
@@ -23,6 +24,7 @@ Main
     </div>
     {% endif %}
 
+    <img src="{% static 'main_logo.jpg' %}" alt="Main Logo" class="rounded-logo">
 
 </div>
 

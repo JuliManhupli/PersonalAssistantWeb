@@ -12,9 +12,9 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 @login_required
-def contact_list(request, page=1):
+def contact_list(request):
     if request.method == 'GET':
-        contacts = AddressBook.objects.all()
+        contacts = AddressBook.objects.filter(user=request.user).order_by('-id')
         search_form = SearchContactForm(request.GET)
         birthday_form = BirthdayContactForm(request.POST)
 
