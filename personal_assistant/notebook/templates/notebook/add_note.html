@@ -1,0 +1,39 @@
+{% extends 'personal_assistant/base.html' %}
+{% block title %}
+Додати нотатку
+{% endblock %}
+
+{% block content %}
+
+<div class="container mt-3">
+    <h2 style="text-align: center;">Додати Нотатку</h2>
+            <a style="margin-bottom: 25px;" href="{{ request.META.HTTP_REFERER|default:'{% url " notebook:all_notes_paginate" %}' }}"
+            class="btn btn-warning">Повернутися</a>
+
+<div class="author-details">
+    <form method="post" action="{% url 'notebook:add_note' %}">
+        {% csrf_token %}
+        <div class="mb-5">
+            <label class="form-label">{{ note_form.title.label_tag }}</label>
+            {{ note_form.title }}
+        </div>
+        <div class="mb-5">
+            <label class="form-label">{{ note_form.description.label_tag }}</label>
+            {{ note_form.description }}
+        </div>
+        <div class="mb-5">
+            <label class="form-label">{{ note_form.tags.label_tag }}</label>
+            {{ note_form.tags }}
+            <p>
+                <span class="help-text">{{ note_form.tags.help_text }}</span>
+            </p>
+        </div>
+        <div style="margin-bottom: 50px" class="d-flex justify-content-start" class="mb-3">
+            <button type="submit" style="margin-top: 0px" class="btn btn-primary btn-crimson me-2">Зберегти</button>
+            <input type="reset" style="width: 150px" class="btn btn-secondary" value="Скинути">
+
+        </div>
+    </form>
+</div>
+</div>
+{% endblock %}

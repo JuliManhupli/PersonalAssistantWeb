@@ -1,0 +1,54 @@
+{% extends 'personal_assistant/base.html' %}
+
+{% block title %}
+Реєстрація
+{% endblock %}
+
+{% block content %}
+<div class="container mt-3">
+    <h2>Реєстрація</h2>
+    {% if form.errors and form.non_field_errors %}
+    <div class="alert alert-danger" role="alert">
+        {{form.non_field_errors}}
+    </div>
+    {% endif %}
+
+
+    <form method="post" style="margin-top: 30px;">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label style="width: 40%;" class="form-label">Ім'я користувача
+                {{ form.username }}
+            </label>
+            <span>{{form.errors.username}}</span>
+        </div>
+        <div class="mb-3">
+            <label style="width: 40%;" class="form-label">Пошта
+                {{ form.email }}
+            </label>
+            <span>{{form.errors.email}}</span>
+        </div>
+        <div class="mb-3">
+            <label style="width: 40%;" class="form-label">Пароль
+                {{ form.password1 }}
+            </label>
+            <span>{{form.errors.password1}}</span>
+        </div>
+        <div class="mb-3">
+            <label style="width: 40%;" class="form-label">Повторення пароля
+                {{ form.password2 }}
+            </label>
+            <span>{{form.errors.password2}}</span>
+        </div>
+
+
+        <div style="margin-bottom: 50px" class="d-flex justify-content-start" class="mb-3">
+            <button type="submit" style="margin-top: 0px" class="btn btn-primary btn-crimson me-2">Зберегти</button>
+            <input type="reset" style="width: 150px" class="btn btn-secondary" value="Скинути">
+
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}

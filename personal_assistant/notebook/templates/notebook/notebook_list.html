@@ -1,0 +1,117 @@
+{% extends 'personal_assistant/base.html' %}
+{% load humanize %}
+{% block title %}
+Нотатник
+{% endblock %}
+
+{% block content %}
+
+{% csrf_token %}
+
+
+{% if search_form.errors and search_form.non_field_errors %}
+<div class="alert alert-danger" role="alert">
+    {{search_form.non_field_errors}}
+</div>
+{% endif %}
+{% if user.is_authenticated %}
+<div class="container mt-3">
+    <div class="d-flex justify-content-between align-items-center">
+        <h2>Нотатник</h2>
+        <a href="{% url 'notebook:add_note' %}" class="btn btn-crimson">Додати Нотатку</a>
+    </div>
+
+    <form class="search-form" id="search-form" action="{% url 'notebook:search_notes' %}" method="GET">
+        <div class="row g-3 align-items-center ms-3">
+
+            <div class="col-auto">
+                <label for="search" class="col-form-label"><b>Пошук Нотаток</b></label>
+            </div>
+        </div>
+        <div class="row g-3 align-items-center ms-3">
+
+            <div class="col-md-10 search_form">
+                {% comment %}
+                <input type="text" id="search_form" name="search_form" {{ search_form.query.value}}>
+                {% endcomment %}
+                {{ search_form.query }}
+            </div>
+
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-info">Шукати</button>
+            </div>
+
+        </div>
+        <div class="row g-3 align-items-center ms-3">
+            <div class="col-auto">
+                <span id="passwordHelpInline" class="form-text">
+                    {% comment %}
+                    <strong><i>Request must be at least 3 (three) characters.</i></strong>
+                    <strong><i>Запит має містити не менше 3 (трьох) символів.</i></strong>
+                    {% endcomment %}
+                </span>
+                <span>{{ search_form.errors.query }}</span>
+            </div>
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <span {% if message.tags %} class="alert alert-info" {% endif %}>{{ message }}</span>
+                {% endfor %}
+            </div>
+            <p></p>
+            {% endif %}
+        </div>
+    </form>
+
+    <p></p>
+
+    {% for notebook in notebooks %}
+
+    <div class="quote"  style="margin-bottom: 25px;" itemscope="" itemtype="http://schema.org/CreativeWork">
+        <h3>{{ notebook.title }}</h3>
+        <span class="text" itemprop="text">
+            <p>{{ notebook.description }}</p>
+            <p><b>Час створення: </b>{{ notebook.created_at|naturaltime }}</p>
+            <span class="mb-3" style="float: right;">
+                {% if user.is_authenticated and notebook.user == user %}
+                    <a href="{% url 'notebook:update_note' notebook.id %}" style="margin-top: -50px"
+                       class="btn btn-secondary">Оновити</a>
+                    <a href="{% url 'notebook:delete_note' notebook.id %}" style="margin-top: -3px"
+                       class="btn btn-danger">Видалити</a>
+                {% endif %}
+            </span>
+        </span>
+        <div class="tags">
+            <meta class="keywords" itemprop="keywords"
+                  content="{% for tag in notebook.tags.all %}{{ tag.name }},{% endfor %}">
+            {% for tag in notebook.tags.all %}
+            <a class="tag" href="{% url 'notebook:tag_notes' tag_name=tag.name %}">{{ tag.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% endfor %}
+
+
+<div class="pagination" >
+    <span class="step-links">
+        {% if notebooks.has_previous %}
+<!--            <a href="?page=1">&laquo; first</a>-->
+            <a href="?page={{ notebooks.previous_page_number }}">←</a>
+        {% endif %}
+
+        <span class="current">
+            {{ notebooks.number }}
+        </span>
+
+        {% if notebooks.has_next %}
+            <a href="?page={{ notebooks.next_page_number }}">→</a>
+<!--            <a href="?page={{ notebooks.paginator.num_pages }}">last &raquo;</a>-->
+        {% endif %}
+    </span>
+</div>
+</div>
+
+{% endif %}
+
+{% endblock %}

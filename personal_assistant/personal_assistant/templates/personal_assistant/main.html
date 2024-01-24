@@ -1,0 +1,31 @@
+{% extends 'personal_assistant/base.html' %}
+
+{% block title %}
+Головна
+{% endblock %}
+
+{% block content %}
+{% load static %}
+<div class="container mt-3">
+    <h2>Головна</h2>
+
+    {% for message in messages %}
+        <h3 class="justify-content-center" style="margin-left: 50px; margin-bottom: 25px"> {{ message }}</h3>
+    {% endfor %}
+
+    {% if user.is_authenticated %}
+    <div class="quote" style="margin-top: 30px;" itemscope="" itemtype="http://schema.org/CreativeWork">
+        <h3>Вітаємо {{ request.user }} у Personal Assistant!</h3>
+    </div>
+    {% else %}
+    <div class="quote" style="margin-top: 30px;" itemscope="" itemtype="http://schema.org/CreativeWork">
+        <h3>Вітаємо!</h3>
+        <h3>Щоб почати користуватися Personal Assistant Ви маєте увійти у свій акаунт!</h3>
+    </div>
+    {% endif %}
+
+    <img src="{% static 'main_logo.jpg' %}" alt="Main Logo" class="rounded-logo">
+
+</div>
+
+{% endblock %}
